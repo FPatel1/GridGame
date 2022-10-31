@@ -32,10 +32,10 @@ public class Map {
 	public boolean addEntity(int symbol, int xPos, int yPos) {
 
 		if (gameMap[xPos][yPos] != App.EMPTY_SQUARE)
-			return false;
+			return true;
 
 		gameMap[xPos][yPos] = symbol;
-		return true;
+		return false;
 
 	}
 
