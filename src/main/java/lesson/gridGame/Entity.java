@@ -13,11 +13,11 @@ public class Entity {
 		this.yPos = yPos;
 		this.voiceline = voiceline;
 	}
-	
+
 	public boolean equals(Object another) {
-		
-		if( another instanceof Entity) {
-			if(this.xPos == ((Entity)another).getxPos() && ((Entity)another).getyPos() == this.yPos)
+
+		if (another instanceof Entity) {
+			if (this.xPos == ((Entity) another).getxPos() && ((Entity) another).getyPos() == this.yPos)
 				return true;
 		}
 		return false;

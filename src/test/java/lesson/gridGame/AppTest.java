@@ -1,8 +1,9 @@
 package lesson.gridGame;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
-import org.junit.Test;
 
 /**
  * Unit test for simple App.

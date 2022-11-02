@@ -35,12 +35,11 @@ public class App {
 	}
 
 	public void runGame() {
-		
 
 		System.out.println("Game has started");
 
 		while (!gameFinished) {
-			
+
 			int playerX = players.get(0).getxPos();
 			int playerY = players.get(0).getyPos();
 
@@ -55,13 +54,13 @@ public class App {
 
 			if (read.toLowerCase().length() == 1) {
 				if (read.toLowerCase().charAt(0) == 'w')
-					this.moveEntity(players.get(0),0, 1);
+					this.moveEntity(players.get(0), 0, 1);
 				else if (read.toLowerCase().charAt(0) == 'a')
-					this.moveEntity(players.get(0),-1, 0);
+					this.moveEntity(players.get(0), -1, 0);
 				else if (read.toLowerCase().charAt(0) == 's')
-					this.moveEntity(players.get(0),0, -1);
+					this.moveEntity(players.get(0), 0, -1);
 				else if (read.toLowerCase().charAt(0) == 'd')
-					this.moveEntity(players.get(0),1, 0);
+					this.moveEntity(players.get(0), 1, 0);
 				else
 					System.out.println("Type 'w' 'a' 's' or 'd'");
 
@@ -154,66 +153,52 @@ public class App {
 			return false;
 		}
 
-		
-		
-		Integer collision = checkCollision(e,x,y);
-		
-		//empty square, eneemy, treasure
-		
-		if(collision == App.TREASURE) {
+		Integer collision = checkCollision(e, x, y);
+
+		// empty square, eneemy, treasure
+
+		if (collision == App.TREASURE) {
 			this.gameFinished = true;
 			System.out.println("You have won");
-			
+
 			return true;
 		}
-		if(collision == App.ENEMY) {
+		if (collision == App.ENEMY) {
 			this.gameFinished = true;
 			System.out.println("You have lost");
 			return true;
 		}
-		
-		
-		if(collision == App.PLAYER) {
-			
-			
+
+		if (collision == App.PLAYER) {
+
 			System.out.println("WHOOOOPS, leave the other player alone!");
 			return false;
-			
+
 		}
-		
+
 		e.setxPos(entX + x);
 		e.setyPos(entY + y);
 		map.updateSquare(e.getxPos(), e.getyPos(), App.PLAYER);
 
-		// look through the entity list and update that version of it.
-
-//		// update the enetity in the lsit;
-//		for (int i = 0; i < players.size(); i++) {
-//			if (players.get(i).equals(e)) {
-//				players.set(i, e);
-//			}
-//		}
-		
 		return true;
 
 	}
 
 	public static void main(String[] args) {
 
-		
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Hello, what is your name");
 		System.out.println("Welcome, " + scan.next());
-		
-		System.out.println("\nHow many rows would you like?");
+
+		System.out.println("How many rows would you like?");
 		int rows = scan.nextInt();
-		
-		System.out.println("\nHow many columns would you like?");
+
+		System.out.println("How many columns would you like?");
 		int cols = scan.nextInt();
-		
-		System.out.println("\nHow many enemies would you like?");
+
+		System.out.println("How many enemies would you like?");
 		int ens = scan.nextInt();
-		
+
 		App app = new App(rows, cols, ens);
 		app.runGame();
 
