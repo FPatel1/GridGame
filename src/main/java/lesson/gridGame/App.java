@@ -4,6 +4,10 @@ import java.util.*;
 
 //is it still possible to spawn in the same spot as the treasure.
 //what is the grid is too small to spawn everything.
+//visual representation of grid
+//monster voicelines
+//multiple treasure
+//tests
 
 public class App {
 
