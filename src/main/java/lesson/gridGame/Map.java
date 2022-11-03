@@ -22,6 +22,36 @@ public class Map {
 
 	}
 
+	public void printMap() {
+		
+		for(int i = 0; i < numCols; i++) 
+			System.out.print("----");
+		
+		System.out.print("\n");
+		
+
+		for (int row = 0; row < numRows; row++) {
+			System.out.print("|  ");
+			for (int col = 0; col < numCols; col++) {		
+				
+				if(gameMap[row][col] == 1)
+					System.out.print("P  ");
+				else
+					System.out.print("•  ");
+				
+			}
+			System.out.print("|\n");
+		}
+		
+		for(int i = 0; i < numCols; i++) 
+			System.out.print("----");
+
+		System.out.print("\n");
+
+		// if walk into entity display that entity
+
+	}
+
 	public void updateSquare(int xPos, int yPos, int symbol) {
 		gameMap[xPos][yPos] = symbol;
 	}

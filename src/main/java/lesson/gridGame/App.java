@@ -9,14 +9,6 @@ import java.util.*;
 //multiple treasure
 //tests
 
-/**
- * 
- * Main menu Grid
- * 
- * @author Admin
- *
- */
-
 public class App {
 
 	public static final Integer EMPTY_SQUARE = 0;
@@ -42,6 +34,9 @@ public class App {
 		for (int i = 0; i < numEnemies; i++)
 			this.generateEntity(App.ENEMY);
 	}
+	
+	
+
 
 	public static int mainMenu() {
 
@@ -88,6 +83,8 @@ public class App {
 		System.out.println("Game has started");
 
 		while (!gameFinished) {
+			
+			map.printMap();
 
 			int playerX = players.get(0).getxPos();
 			int playerY = players.get(0).getyPos();
@@ -236,11 +233,19 @@ public class App {
 	}
 
 	public static void main(String[] args) {
+		
+		
 
 		while (true) {
 
 			int res = App.mainMenu();
+			
+			
 			if (res == 1) {
+				
+				System.out.println("•");
+				
+				
 				Scanner scan = new Scanner(System.in);
 				System.out.println("Hello, what is your name");
 				System.out.println("Welcome, " + scan.nextLine());
