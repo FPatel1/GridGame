@@ -1,7 +1,6 @@
 package lesson.gridGame;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public class Map {
 
@@ -10,8 +9,6 @@ public class Map {
 	 * 0 = empty square 1 = player 2 = treasure
 	 * 
 	 */
-
-	private static final int PLAYER = 1;
 
 	private int[][] gameMap;
 	private int numRows;

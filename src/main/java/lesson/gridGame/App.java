@@ -18,14 +18,11 @@ public class App {
 	private ArrayList<Entity> enemies = new ArrayList<>();
 	private ArrayList<Entity> treasures = new ArrayList<>();
 
-	private int numEnemies = 0;
-
 	private boolean gameFinished = false;
 
 	public App(int numRows, int numCols, int numEnemies) {
 
 		map = new Map(numRows, numCols);
-		this.numEnemies = numEnemies;
 
 		this.generateEntity(App.PLAYER);
 		this.generateEntity(App.TREASURE);

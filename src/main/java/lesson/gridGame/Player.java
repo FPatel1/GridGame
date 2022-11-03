@@ -1,6 +1,5 @@
 package lesson.gridGame;
 
-import java.util.Random;
 
 public class Player extends Entity {
 
