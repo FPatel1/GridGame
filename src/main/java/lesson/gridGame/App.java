@@ -9,6 +9,14 @@ import java.util.*;
 //multiple treasure
 //tests
 
+/**
+ * 
+ * Main menu Grid
+ * 
+ * @author Admin
+ *
+ */
+
 public class App {
 
 	public static final Integer EMPTY_SQUARE = 0;
@@ -35,6 +43,46 @@ public class App {
 			this.generateEntity(App.ENEMY);
 	}
 
+	public static int mainMenu() {
+
+//		1 - Start Game
+//		 * 2 - Load Game
+//		 * 3 - Save Game
+//		 * 4 - Quit
+//		 *
+
+		System.out.println("***************************");
+
+		System.out.println("Please enter a digit");
+		System.out.println("1 - Start Game");
+		System.out.println("2 - Load Game");
+		System.out.println("3 - Save Game");
+		System.out.println("4 - Quit");
+
+		System.out.println("***************************");
+
+		Scanner scan = new Scanner(System.in);
+		String res = scan.nextLine();
+
+		switch (res) {
+
+		case "1":
+		case "2":
+		case "3":
+		case "4":
+			// scan.close();
+			return Integer.parseInt(res);
+
+		default:
+			System.out.println("Invald input!");
+			App.mainMenu();
+			break;
+		}
+		// scan.close();
+		return -1;
+
+	}
+
 	public void runGame() {
 
 		System.out.println("Game has started");
@@ -48,7 +96,7 @@ public class App {
 
 			this.checkDistance();
 
-			System.out.println("Enter 'w' 'a' 's' or 'd' to move");
+			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to quit!");
 
 			Scanner scan = new Scanner(System.in);
 			String read = scan.nextLine();
@@ -62,6 +110,8 @@ public class App {
 					this.moveEntity(players.get(0), 0, -1);
 				else if (read.toLowerCase().charAt(0) == 'd')
 					this.moveEntity(players.get(0), 1, 0);
+				else if (read.toLowerCase().charAt(0) == 'q')
+					break;
 				else
 					System.out.println("Type 'w' 'a' 's' or 'd'");
 
@@ -187,21 +237,37 @@ public class App {
 
 	public static void main(String[] args) {
 
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Hello, what is your name");
-		System.out.println("Welcome, " + scan.next());
+		while (true) {
 
-		System.out.println("How many rows would you like?");
-		int rows = scan.nextInt();
+			int res = App.mainMenu();
+			if (res == 1) {
+				Scanner scan = new Scanner(System.in);
+				System.out.println("Hello, what is your name");
+				System.out.println("Welcome, " + scan.nextLine());
 
-		System.out.println("How many columns would you like?");
-		int cols = scan.nextInt();
+				System.out.println("How many rows would you like?");
+				int rows = scan.nextInt();
 
-		System.out.println("How many enemies would you like?");
-		int ens = scan.nextInt();
+				System.out.println("How many columns would you like?");
+				int cols = scan.nextInt();
 
-		App app = new App(rows, cols, ens);
-		app.runGame();
+				System.out.println("How many enemies would you like?");
+				int ens = scan.nextInt();
 
+				// scan.close();
+				App app = new App(rows, cols, ens);
+				app.runGame();
+
+			} else if (res == 4)
+				break;
+			else {
+				System.out.println("Working on this!");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
