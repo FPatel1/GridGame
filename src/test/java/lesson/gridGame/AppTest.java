@@ -12,12 +12,8 @@ public class AppTest {
 	 * Rigorous Test :-)
 	 */
 	@Test
+	@DisplayName("Testing trueness")
 	public void shouldAnswerWithTrue() {
 		assertTrue(true);
-	}
-
-	@Test
-	public void failTest() {
-		assertTrue(false);
 	}
 }
