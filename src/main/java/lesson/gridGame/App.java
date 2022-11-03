@@ -267,6 +267,7 @@ public class App implements Serializable {
 
 		}
 
+		map.updateSquare(e.getxPos(), e.getyPos(), App.EMPTY_SQUARE);
 		e.setxPos(entX + x);
 		e.setyPos(entY + y);
 		map.updateSquare(e.getxPos(), e.getyPos(), App.PLAYER);
