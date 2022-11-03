@@ -1,5 +1,6 @@
 package lesson.gridGame;
 
+import java.io.*;
 import java.util.*;
 
 //is it still possible to spawn in the same spot as the treasure.
@@ -9,7 +10,7 @@ import java.util.*;
 //multiple treasure
 //tests
 
-public class App {
+public class App implements Serializable {
 
 	public static final Integer EMPTY_SQUARE = 0;
 	public static final Integer PLAYER = 1;
@@ -34,9 +35,50 @@ public class App {
 		for (int i = 0; i < numEnemies; i++)
 			this.generateEntity(App.ENEMY);
 	}
-	
-	
 
+	public void saveGame() {
+		
+		String filename = "saves/game.ser";
+		
+		try {
+			FileOutputStream file = new FileOutputStream(filename);
+			ObjectOutputStream out = new ObjectOutputStream(file);
+			out.writeObject(this);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static App loadGame() {
+		
+		String filename = "saves/game.ser";
+		try {
+			FileInputStream file = new FileInputStream(filename);
+			ObjectInputStream in = new ObjectInputStream(file);
+			
+			App loadedApp = (App) in.readObject();
+			
+			return loadedApp;
+//			this.map = loadedApp.map;
+//			this.players = loadedApp.players;
+//			this.enemies = loadedApp.enemies;
+//			this.treasures = loadedApp.treasures;
+//			this.gameFinished = loadedApp.gameFinished;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+		
+	}
 
 	public static int mainMenu() {
 
@@ -51,7 +93,6 @@ public class App {
 		System.out.println("Please enter a digit");
 		System.out.println("1 - Start Game");
 		System.out.println("2 - Load Game");
-		System.out.println("3 - Save Game");
 		System.out.println("4 - Quit");
 
 		System.out.println("***************************");
@@ -63,7 +104,6 @@ public class App {
 
 		case "1":
 		case "2":
-		case "3":
 		case "4":
 			// scan.close();
 			return Integer.parseInt(res);
@@ -83,7 +123,7 @@ public class App {
 		System.out.println("Game has started");
 
 		while (!gameFinished) {
-			
+
 			map.printMap();
 
 			int playerX = players.get(0).getxPos();
@@ -93,7 +133,7 @@ public class App {
 
 			this.checkDistance();
 
-			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to quit!");
+			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to save and quit!");
 
 			Scanner scan = new Scanner(System.in);
 			String read = scan.nextLine();
@@ -107,8 +147,11 @@ public class App {
 					this.moveEntity(players.get(0), 0, -1);
 				else if (read.toLowerCase().charAt(0) == 'd')
 					this.moveEntity(players.get(0), 1, 0);
-				else if (read.toLowerCase().charAt(0) == 'q')
+				else if (read.toLowerCase().charAt(0) == 'q') {
+					this.saveGame();
 					break;
+					
+				}
 				else
 					System.out.println("Type 'w' 'a' 's' or 'd'");
 
@@ -233,18 +276,12 @@ public class App {
 	}
 
 	public static void main(String[] args) {
-		
-		
 
 		while (true) {
 
 			int res = App.mainMenu();
-			
-			
+
 			if (res == 1) {
-				
-				System.out.println("•");
-				
 				
 				Scanner scan = new Scanner(System.in);
 				System.out.println("Hello, what is your name");
@@ -263,7 +300,11 @@ public class App {
 				App app = new App(rows, cols, ens);
 				app.runGame();
 
-			} else if (res == 4)
+			}else if (res == 2) {
+				App app = App.loadGame();
+				app.runGame();
+			} 
+			else if (res == 4)
 				break;
 			else {
 				System.out.println("Working on this!");

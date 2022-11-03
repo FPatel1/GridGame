@@ -2,7 +2,10 @@ package lesson.gridGame;
 
 import java.util.Arrays;
 
-public class Map {
+
+import java.io.*;
+
+public class Map implements Serializable{
 
 	/**
 	 * 

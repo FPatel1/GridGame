@@ -1,6 +1,8 @@
 package lesson.gridGame;
 
-public class Entity {
+import java.io.*;
+
+public class Entity implements Serializable {
 
 	public static int SYMBOL;
 	private int xPos;

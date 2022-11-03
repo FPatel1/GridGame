@@ -1,5 +1,6 @@
 package lesson.gridGame;
 
+import java.io.*;
 
 public class Player extends Entity {
 
