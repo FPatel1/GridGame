@@ -28,16 +28,15 @@ public class App implements Serializable {
 		map = new Map(numRows, numCols);
 		this.generateEntity(App.TREASURE);
 		this.generateEntity(App.PLAYER);
-		
 
 		for (int i = 0; i < numEnemies; i++)
 			this.generateEntity(App.ENEMY);
 	}
 
 	public void saveGame() {
-		
+
 		String filename = "saves/game.ser";
-		
+
 		try {
 			FileOutputStream file = new FileOutputStream(filename);
 			ObjectOutputStream out = new ObjectOutputStream(file);
@@ -49,23 +48,18 @@ public class App implements Serializable {
 		}
 
 	}
-	
+
 	public static App loadGame() {
-		
+
 		String filename = "saves/game.ser";
 		try {
 			FileInputStream file = new FileInputStream(filename);
 			ObjectInputStream in = new ObjectInputStream(file);
-			
+
 			App loadedApp = (App) in.readObject();
-			
+
 			return loadedApp;
-//			this.map = loadedApp.map;
-//			this.players = loadedApp.players;
-//			this.enemies = loadedApp.enemies;
-//			this.treasures = loadedApp.treasures;
-//			this.gameFinished = loadedApp.gameFinished;
-			
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -73,18 +67,12 @@ public class App implements Serializable {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
-		
+
 	}
 
 	public static int mainMenu() {
-
-//		1 - Start Game
-//		 * 2 - Load Game
-//		 * 3 - Save Game
-//		 * 4 - Quit
-//		 *
 
 		System.out.println("***************************");
 
@@ -103,7 +91,6 @@ public class App implements Serializable {
 		case "1":
 		case "2":
 		case "4":
-			// scan.close();
 			return Integer.parseInt(res);
 
 		default:
@@ -111,9 +98,17 @@ public class App implements Serializable {
 			App.mainMenu();
 			break;
 		}
-		// scan.close();
 		return -1;
 
+	}
+
+	private void pause(long time) {
+
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void runGame() {
@@ -124,14 +119,13 @@ public class App implements Serializable {
 
 			map.printMap();
 
-			int playerX = players.get(0).getxPos();
-			int playerY = players.get(0).getyPos();
-
-			//System.out.println("Player is currently at X:" + playerX + " Y:" + playerY);
+			this.pause(500);
 
 			this.checkDistance();
 
 			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to save and quit!");
+
+			this.pause(500);
 
 			Scanner scan = new Scanner(System.in);
 			String read = scan.nextLine();
@@ -148,38 +142,40 @@ public class App implements Serializable {
 				else if (read.toLowerCase().charAt(0) == 'q') {
 					this.saveGame();
 					break;
-					
-				}
-				else
+
+				} else
 					System.out.println("Type 'w' 'a' 's' or 'd'");
 
 			} else
 				System.out.println("Type 'w' 'a' 's' or 'd'");
-
+			this.pause(500);
 		}
 
 	}
 
 	public void generateEntity(int symbol) {
-		
-		
 
 		int xSet = ThreadLocalRandom.current().nextInt(0, map.getRows());
 		int ySet = ThreadLocalRandom.current().nextInt(0, map.getCols());
-		
-		if (map.addEntity(symbol, xSet, ySet))
-			this.generateEntity(symbol);
 
-		Entity toAdd = new Entity(xSet, ySet, "Voice");
+		if (map.addEntity(symbol, xSet, ySet)) {
+			this.generateEntity(symbol);
+			return;
+
+		}
 
 		if (symbol == App.PLAYER) {
+			Entity toAdd = new Entity(xSet, ySet, "Voice");
 			players.add(toAdd);
 		}
 
 		if (symbol == App.TREASURE) {
+			Entity toAdd = new Entity(xSet, ySet, "Voice");
 			treasures.add(toAdd);
 		}
 		if (symbol == App.ENEMY) {
+			Entity toAdd = new Entity(xSet, ySet,
+					Entity.lines[ThreadLocalRandom.current().nextInt(0, Entity.lines.length)]);
 			enemies.add(toAdd);
 		}
 	}
@@ -193,7 +189,7 @@ public class App implements Serializable {
 			if (x == enemy.getxPos() && y == enemy.getyPos()) {
 				System.out.println(enemy.getVoiceline());
 				return App.ENEMY;
-				
+
 			}
 		}
 
@@ -216,17 +212,6 @@ public class App implements Serializable {
 
 	}
 
-//	public void printEverything() {
-//
-//		System.out.println("Player x:" + entities.get(PLAYER).getxPos());
-//		System.out.println("Player y:" + entities.get(PLAYER).getyPos());
-//		System.out.println("numRows:" + map.getRows());
-//		System.out.println("numCols:" + map.getCols());
-//
-//		System.out.println("TreasureX:" + treasureX);
-//		System.out.println("TreasureY:" + treasureY);
-//	}
-
 	public boolean moveEntity(Entity e, int x, int y) {
 
 		int entX = e.getxPos();
@@ -245,8 +230,6 @@ public class App implements Serializable {
 
 		Integer collision = checkCollision(e, x, y);
 
-		// empty square, eneemy, treasure
-
 		if (collision == App.TREASURE) {
 			this.gameFinished = true;
 			System.out.println("You have won");
@@ -256,6 +239,24 @@ public class App implements Serializable {
 		if (collision == App.ENEMY) {
 			this.gameFinished = true;
 			System.out.println("You have lost");
+
+			this.pause(1000);
+			System.out.print("But wait");
+			this.pause(500);
+			System.out.print(".");
+			this.pause(500);
+			System.out.print(".");
+			this.pause(500);
+			System.out.print(".\n");
+			
+			System.out.println("The enemies have a message for you!");
+			this.pause(1000);
+
+			for (Entity ent : enemies) {
+				System.out.println(ent.getVoiceline());
+				this.pause(500);
+			}
+
 			return true;
 		}
 
@@ -282,7 +283,7 @@ public class App implements Serializable {
 			int res = App.mainMenu();
 
 			if (res == 1) {
-				
+
 				Scanner scan = new Scanner(System.in);
 				System.out.println("Hello, what is your name");
 				System.out.println("Welcome, " + scan.nextLine());
@@ -296,7 +297,7 @@ public class App implements Serializable {
 				System.out.println("How many enemies would you like?");
 				int ens = scan.nextInt();
 
-				if(ens + 1 + 1 > (rows*cols)) {
+				if (ens + 1 + 1 > (rows * cols)) {
 					System.out.println("Not enough space");
 					continue;
 				}
@@ -304,19 +305,13 @@ public class App implements Serializable {
 				App app = new App(rows, cols, ens);
 				app.runGame();
 
-			}else if (res == 2) {
+			} else if (res == 2) {
 				App app = App.loadGame();
 				app.runGame();
-			} 
-			else if (res == 4)
+			} else if (res == 4)
 				break;
 			else {
-				System.out.println("Working on this!");
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				System.out.println("Not Valid!");
 			}
 		}
 	}
