@@ -26,12 +26,16 @@ public class App implements Serializable {
 	public App(int numRows, int numCols, int numEnemies) {
 
 		map = new Map(numRows, numCols);
-		this.generateEntity(App.TREASURE);
-		this.generateEntity(App.PLAYER);
+		this.generateEntity(App.TREASURE,"");
+		
 		
 
 		for (int i = 0; i < numEnemies; i++)
-			this.generateEntity(App.ENEMY);
+			this.generateEntity(App.ENEMY,"");
+	}
+	
+	public void addPlayer(String name) {
+		this.generateEntity(App.PLAYER, name);
 	}
 
 	public void saveGame() {
@@ -60,11 +64,6 @@ public class App implements Serializable {
 			App loadedApp = (App) in.readObject();
 			
 			return loadedApp;
-//			this.map = loadedApp.map;
-//			this.players = loadedApp.players;
-//			this.enemies = loadedApp.enemies;
-//			this.treasures = loadedApp.treasures;
-//			this.gameFinished = loadedApp.gameFinished;
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -79,12 +78,6 @@ public class App implements Serializable {
 	}
 
 	public static int mainMenu() {
-
-//		1 - Start Game
-//		 * 2 - Load Game
-//		 * 3 - Save Game
-//		 * 4 - Quit
-//		 *
 
 		System.out.println("***************************");
 
@@ -103,7 +96,6 @@ public class App implements Serializable {
 		case "1":
 		case "2":
 		case "4":
-			// scan.close();
 			return Integer.parseInt(res);
 
 		default:
@@ -111,7 +103,6 @@ public class App implements Serializable {
 			App.mainMenu();
 			break;
 		}
-		// scan.close();
 		return -1;
 
 	}
@@ -123,44 +114,79 @@ public class App implements Serializable {
 		while (!gameFinished) {
 
 			map.printMap();
+			
+			//do these steps for every player
+			
+			for(Entity play :  players) {
+				
+				System.out.println("Player:" + ((Player)play).getName() + "'s Turn");
+				int playerX = play.getxPos();
+				int playerY = play.getyPos();
 
-			int playerX = players.get(0).getxPos();
-			int playerY = players.get(0).getyPos();
+				this.checkDistance(play);
 
-			//System.out.println("Player is currently at X:" + playerX + " Y:" + playerY);
+				System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to save and quit!");
 
-			this.checkDistance();
+				Scanner scan = new Scanner(System.in);
+				String read = scan.nextLine();
 
-			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to save and quit!");
+				if (read.toLowerCase().length() == 1) {
+					if (read.toLowerCase().charAt(0) == 'w')
+						this.moveEntity(play, -1, 0);
+					else if (read.toLowerCase().charAt(0) == 'a')
+						this.moveEntity(play, 0, -1);
+					else if (read.toLowerCase().charAt(0) == 's')
+						this.moveEntity(play, 1, 0);
+					else if (read.toLowerCase().charAt(0) == 'd')
+						this.moveEntity(play, 0, 1);
+					else if (read.toLowerCase().charAt(0) == 'q') {
+						this.saveGame();
+						break;
+						
+					}
+					else
+						System.out.println("Type 'w' 'a' 's' or 'd'");
 
-			Scanner scan = new Scanner(System.in);
-			String read = scan.nextLine();
-
-			if (read.toLowerCase().length() == 1) {
-				if (read.toLowerCase().charAt(0) == 'w')
-					this.moveEntity(players.get(0), -1, 0);
-				else if (read.toLowerCase().charAt(0) == 'a')
-					this.moveEntity(players.get(0), 0, -1);
-				else if (read.toLowerCase().charAt(0) == 's')
-					this.moveEntity(players.get(0), 1, 0);
-				else if (read.toLowerCase().charAt(0) == 'd')
-					this.moveEntity(players.get(0), 0, 1);
-				else if (read.toLowerCase().charAt(0) == 'q') {
-					this.saveGame();
-					break;
-					
-				}
-				else
+				} else
 					System.out.println("Type 'w' 'a' 's' or 'd'");
+				
+			}
 
-			} else
-				System.out.println("Type 'w' 'a' 's' or 'd'");
+//			int playerX = players.get(0).getxPos();
+//			int playerY = players.get(0).getyPos();
+//
+//			this.checkDistance();
+//
+//			System.out.println("Enter 'w' 'a' 's' or 'd' to move or q to save and quit!");
+//
+//			Scanner scan = new Scanner(System.in);
+//			String read = scan.nextLine();
+//
+//			if (read.toLowerCase().length() == 1) {
+//				if (read.toLowerCase().charAt(0) == 'w')
+//					this.moveEntity(players.get(0), -1, 0);
+//				else if (read.toLowerCase().charAt(0) == 'a')
+//					this.moveEntity(players.get(0), 0, -1);
+//				else if (read.toLowerCase().charAt(0) == 's')
+//					this.moveEntity(players.get(0), 1, 0);
+//				else if (read.toLowerCase().charAt(0) == 'd')
+//					this.moveEntity(players.get(0), 0, 1);
+//				else if (read.toLowerCase().charAt(0) == 'q') {
+//					this.saveGame();
+//					break;
+//					
+//				}
+//				else
+//					System.out.println("Type 'w' 'a' 's' or 'd'");
+//
+//			} else
+//				System.out.println("Type 'w' 'a' 's' or 'd'");
 
 		}
 
 	}
 
-	public void generateEntity(int symbol) {
+	public void generateEntity(int symbol, String name) {
 		
 		
 
@@ -168,12 +194,13 @@ public class App implements Serializable {
 		int ySet = ThreadLocalRandom.current().nextInt(0, map.getCols());
 		
 		if (map.addEntity(symbol, xSet, ySet))
-			this.generateEntity(symbol);
+			this.generateEntity(symbol, name);
 
 		Entity toAdd = new Entity(xSet, ySet, "Voice");
 
 		if (symbol == App.PLAYER) {
-			players.add(toAdd);
+			Entity toAdds = new Player(xSet, ySet, "Voice", name);
+			players.add(toAdds);
 		}
 
 		if (symbol == App.TREASURE) {
@@ -206,11 +233,11 @@ public class App implements Serializable {
 
 	}
 
-	public void checkDistance() {
+	public void checkDistance(Entity play) {
 
-		int xDiff = Math.abs(treasures.get(0).getxPos() - players.get(0).getxPos());
+		int xDiff = Math.abs(treasures.get(0).getxPos() - play.getxPos());
 
-		int yDiff = Math.abs(treasures.get(0).getyPos() - players.get(0).getyPos());
+		int yDiff = Math.abs(treasures.get(0).getyPos() - play.getyPos());
 
 		System.out.println("You are " + (xDiff + yDiff) + " moves away!");
 
@@ -295,13 +322,24 @@ public class App implements Serializable {
 
 				System.out.println("How many enemies would you like?");
 				int ens = scan.nextInt();
+				
+				System.out.println("How many Players would you like?");
+				int players = scan.nextInt();
 
-				if(ens + 1 + 1 > (rows*cols)) {
+				if(ens + players + 1 > (rows*cols)) {
 					System.out.println("Not enough space");
 					continue;
 				}
 				// scan.close();
 				App app = new App(rows, cols, ens);
+				
+				//add the players
+				
+				for(int i =0; i < players; i++) {
+					System.out.println("Enter player name");
+					String name = scan.next();
+					app.addPlayer(name);
+				}
 				app.runGame();
 
 			}else if (res == 2) {

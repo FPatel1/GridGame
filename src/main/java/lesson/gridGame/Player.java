@@ -3,11 +3,13 @@ package lesson.gridGame;
 import java.io.*;
 
 public class Player extends Entity {
+	
+	private String name;
 
-	public Player(int xPos, int yPos, String voiceline) {
+	public Player(int xPos, int yPos, String voiceline, String name) {
 
 		super(xPos, yPos, voiceline);
-
+		this.name = name;
 		Player.SYMBOL = 1;
 
 	}
@@ -23,4 +25,8 @@ public class Player extends Entity {
 
 	}
 
+	public String getName() {
+		return this.name;
+	}
+	
 }
