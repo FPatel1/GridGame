@@ -5,8 +5,6 @@ import java.io.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.*;
 
-//what is the grid is too small to spawn everything.
-//monster voicelines
 //multiple treasure
 //tests
 
@@ -298,6 +296,10 @@ public class App implements Serializable {
 				System.out.println("How many enemies would you like?");
 				int ens = scan.nextInt();
 
+				if(ens + 1 + 1 > (rows*cols)) {
+					System.out.println("Not enough space");
+					continue;
+				}
 				// scan.close();
 				App app = new App(rows, cols, ens);
 				app.runGame();
