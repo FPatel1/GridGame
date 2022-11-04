@@ -1,11 +1,11 @@
 package lesson.gridGame;
 
 import java.io.*;
+
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.*;
 
-//is it still possible to spawn in the same spot as the treasure.
 //what is the grid is too small to spawn everything.
-//visual representation of grid
 //monster voicelines
 //multiple treasure
 //tests
@@ -129,7 +129,7 @@ public class App implements Serializable {
 			int playerX = players.get(0).getxPos();
 			int playerY = players.get(0).getyPos();
 
-			System.out.println("Player is currently at X:" + playerX + " Y:" + playerY);
+			//System.out.println("Player is currently at X:" + playerX + " Y:" + playerY);
 
 			this.checkDistance();
 
@@ -163,21 +163,19 @@ public class App implements Serializable {
 	}
 
 	public void generateEntity(int symbol) {
+		
+		
 
-		Random rand = new Random();
-
-		int xSet = rand.nextInt(map.getRows());
-		int ySet = rand.nextInt(map.getCols());
-		System.out.println(xSet + " " + ySet);
+		int xSet = ThreadLocalRandom.current().nextInt(0, map.getRows());
+		int ySet = ThreadLocalRandom.current().nextInt(0, map.getCols());
+		
 		if (map.addEntity(symbol, xSet, ySet))
 			this.generateEntity(symbol);
 
 		Entity toAdd = new Entity(xSet, ySet, "Voice");
 
 		if (symbol == App.PLAYER) {
-
 			players.add(toAdd);
-
 		}
 
 		if (symbol == App.TREASURE) {
@@ -194,8 +192,11 @@ public class App implements Serializable {
 		int y = e.getyPos() + yMove;
 
 		for (Entity enemy : enemies) {
-			if (x == enemy.getxPos() && y == enemy.getyPos())
+			if (x == enemy.getxPos() && y == enemy.getyPos()) {
+				System.out.println(enemy.getVoiceline());
 				return App.ENEMY;
+				
+			}
 		}
 
 		for (Entity enemy : treasures) {
