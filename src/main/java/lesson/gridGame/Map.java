@@ -39,6 +39,10 @@ public class Map implements Serializable{
 				
 				if(gameMap[row][col] == 1)
 					System.out.print("P  ");
+//				else if (gameMap[row][col] == 2)
+//					System.out.print("T  ");
+//				else if (gameMap[row][col] == 3)
+//					System.out.print("E  ");
 				else
 					System.out.print("•  ");
 				

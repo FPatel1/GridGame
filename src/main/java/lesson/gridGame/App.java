@@ -28,9 +28,9 @@ public class App implements Serializable {
 	public App(int numRows, int numCols, int numEnemies) {
 
 		map = new Map(numRows, numCols);
-
-		this.generateEntity(App.PLAYER);
 		this.generateEntity(App.TREASURE);
+		this.generateEntity(App.PLAYER);
+		
 
 		for (int i = 0; i < numEnemies; i++)
 			this.generateEntity(App.ENEMY);
@@ -140,13 +140,13 @@ public class App implements Serializable {
 
 			if (read.toLowerCase().length() == 1) {
 				if (read.toLowerCase().charAt(0) == 'w')
-					this.moveEntity(players.get(0), 0, 1);
-				else if (read.toLowerCase().charAt(0) == 'a')
 					this.moveEntity(players.get(0), -1, 0);
-				else if (read.toLowerCase().charAt(0) == 's')
+				else if (read.toLowerCase().charAt(0) == 'a')
 					this.moveEntity(players.get(0), 0, -1);
-				else if (read.toLowerCase().charAt(0) == 'd')
+				else if (read.toLowerCase().charAt(0) == 's')
 					this.moveEntity(players.get(0), 1, 0);
+				else if (read.toLowerCase().charAt(0) == 'd')
+					this.moveEntity(players.get(0), 0, 1);
 				else if (read.toLowerCase().charAt(0) == 'q') {
 					this.saveGame();
 					break;
@@ -168,7 +168,7 @@ public class App implements Serializable {
 
 		int xSet = rand.nextInt(map.getRows());
 		int ySet = rand.nextInt(map.getCols());
-
+		System.out.println(xSet + " " + ySet);
 		if (map.addEntity(symbol, xSet, ySet))
 			this.generateEntity(symbol);
 
